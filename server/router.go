@@ -91,6 +91,15 @@ func SetupRoutes() *gin.Engine {
 				fileHistory.GET("/:id", fileHistoryController.GetFileHistoryInfo) // 获取文件历史详情
 			}
 
+			// 失效STRM文件检测相关路由
+			invalidStrmFile := auth.Group("/invalid-strm-files")
+			{
+				invalidStrmFile.GET("/", controller.InvalidStrmFile.GetInvalidStrmFileList)                     // 获取失效STRM文件列表
+				invalidStrmFile.GET("/statistics", controller.InvalidStrmFile.GetInvalidStrmFileStatistics)     // 获取统计信息
+				invalidStrmFile.GET("/:id", controller.InvalidStrmFile.GetInvalidStrmFileDetail)                // 获取失效STRM文件详情
+				invalidStrmFile.POST("/batch-process", controller.InvalidStrmFile.BatchProcessInvalidStrmFiles) // 批量处理失效文件
+			}
+
 			// AList 相关路由
 			alist := auth.Group("/alist")
 			{
